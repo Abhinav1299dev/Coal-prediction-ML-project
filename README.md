@@ -119,7 +119,7 @@ coal_project/
 ## 👨‍💻 Author
 
 **Abhinav Yadav**
-
+Computer Science Engineer
 ---
 
 ⭐ If you like this project, consider giving it a star!
