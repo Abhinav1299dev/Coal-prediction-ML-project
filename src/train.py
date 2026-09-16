@@ -50,4 +50,35 @@ rf_random.fit(X_train, y_train)
 # Save model
 pickle.dump(rf_random, open("model/model.pkl", "wb"))
 
-print("✅ Model trained and saved!")
+print("✅ Model trained and saved!") 
+
+# -------------------------------
+# 👉 ADD ROC CURVE CODE BELOW
+# -------------------------------
+
+from sklearn.metrics import roc_curve, auc
+import matplotlib.pyplot as plt
+
+# Predict probabilities (IMPORTANT)
+y_probs = rf_random.predict_proba(X_test)[:, 1]
+
+# Compute ROC
+fpr, tpr, thresholds = roc_curve(y_test, y_probs)
+
+# Compute AUC
+roc_auc = auc(fpr, tpr)
+
+# Plot ROC curve
+plt.figure()
+plt.plot(fpr, tpr, label=f'Random Forest (AUC = {roc_auc:.3f})')
+plt.plot([0, 1], [0, 1], linestyle='--')
+
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve')
+plt.legend(loc='lower right')
+
+# Save figure
+plt.savefig("roc_curve.png", dpi=300, bbox_inches='tight')
+
+print("✅ ROC curve saved as roc_curve.png")
