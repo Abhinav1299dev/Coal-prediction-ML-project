@@ -1,96 +1,142 @@
-#  Coal Production Prediction using Machine Learning
+# Coal Production Prediction Using Machine Learning
 
-## 📌 Overview
+## Overview
 
-This project predicts **coal production levels** using a Machine Learning model based on real-world mining data.
-It leverages **Random Forest Regression** and provides an **interactive web interface** built with Streamlit.
+**Coal Production Prediction** is a machine learning project that predicts coal production levels using real-world mining data.
 
-The system allows users to input mining-related parameters and instantly get:
+The project uses a **Random Forest Regression** model to estimate coal production based on mining-related and geographical parameters. An interactive **Streamlit web application** allows users to enter input values and receive real-time predictions along with visual insights.
 
-* 📊 Estimated coal production (in million tonnes)
-* 📈 Production level (Low / Medium / High)
-* 📉 Visual comparison with average production
-* 🗺️ Location-based visualization on map
+### Key Capabilities
 
----
-
-## 🚀 Key Features
-
-* 🔹 Data preprocessing & feature engineering
-* 🔹 Handling categorical data using encoding
-* 🔹 Model training using Random Forest
-* 🔹 Model evaluation with visualizations
-* 🔹 Interactive Streamlit web application
-* 🔹 Real-time prediction system
-* 🔹 Graph + Map visualization for better insights
+* Predict estimated coal production in **million tonnes**
+* Classify production into **Low, Medium, or High**
+* Compare predicted production with average production
+* Visualize the selected mining location on an interactive map
+* Provide an end-to-end workflow from data preprocessing to deployment
 
 ---
 
-## 🛠️ Tech Stack
+## Key Features
 
-* **Language:** Python
-* **Libraries:** Pandas, NumPy, Scikit-learn
-* **Visualization:** Matplotlib, Seaborn
-* **Web App:** Streamlit
-
----
-
-## 📊 Input Parameters
-
-The model uses the following key inputs:
-
-* State/UT Name
-* Coal Type (Coal / Lignite)
-* Ownership (Govt / Private)
-* Latitude & Longitude
+* **Data Preprocessing** – Cleaning and preparing real-world mining data
+* **Feature Engineering** – Transforming raw data into model-ready features
+* **Categorical Encoding** – Converting categorical mining attributes into numerical representations
+* **Random Forest Regression** – Training a machine learning model for production prediction
+* **Model Evaluation** – Evaluating model performance using appropriate metrics and visualizations
+* **Interactive Web Application** – User-friendly Streamlit interface for predictions
+* **Data Visualization** – Graphical comparison of predicted and average production
+* **Location Visualization** – Map-based representation using latitude and longitude
 
 ---
 
-## 📈 Output
+## Technology Stack
 
-The system provides:
-
-* ✅ Estimated coal production (in million tonnes)
-* ✅ Production category (Low / Medium / High)
-* ✅ Graph comparison with average production
-* ✅ Map visualization of selected location
+| Category             | Technologies        |
+| -------------------- | ------------------- |
+| Programming Language | Python              |
+| Data Processing      | Pandas, NumPy       |
+| Machine Learning     | Scikit-learn        |
+| Data Visualization   | Matplotlib, Seaborn |
+| Web Application      | Streamlit           |
+| Version Control      | Git, GitHub         |
 
 ---
 
-## ▶️ How to Run the Project
+## Input Parameters
 
-### 1️⃣ Install dependencies
+The model uses the following parameters to generate predictions:
+
+* **State/UT Name**
+* **Coal Type** – Coal / Lignite
+* **Ownership** – Government / Private
+* **Latitude**
+* **Longitude**
+
+---
+
+## Output
+
+Based on the provided inputs, the application generates:
+
+* **Estimated Coal Production** in million tonnes
+* **Production Category** – Low / Medium / High
+* **Production Comparison** against average production
+* **Location Visualization** based on the selected latitude and longitude
+
+---
+
+## Machine Learning Workflow
+
+The project follows an end-to-end machine learning pipeline:
+
+```text
+Raw Mining Data
+      ↓
+Data Preprocessing
+      ↓
+Feature Engineering
+      ↓
+Categorical Encoding
+      ↓
+Train-Test Split
+      ↓
+Random Forest Regression
+      ↓
+Model Evaluation
+      ↓
+Prediction
+      ↓
+Streamlit Web Application
+```
+
+---
+
+## Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd coal_project
+```
+
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2️⃣ Train the model
+### 3. Train the Model
 
 ```bash
 python src/train.py
 ```
 
-### 3️⃣ Run the web application
+### 4. Run the Streamlit Application
 
 ```bash
 python -m streamlit run app.py
 ```
 
+The application will open in your browser, where you can enter mining parameters and generate predictions.
+
 ---
 
-## 📂 Project Structure
+## Project Structure
 
-```
+```text
 coal_project/
 │
 ├── data/
+│
 ├── model/
+│
 ├── src/
 │   ├── preprocess.py
 │   ├── train.py
 │   ├── predict.py
 │   └── evaluate.py
+│
 ├── app.py
 ├── requirements.txt
 └── README.md
@@ -98,28 +144,37 @@ coal_project/
 
 ---
 
-## 💡 Key Highlights
+## Project Highlights
 
-* ✔️ End-to-end ML pipeline (data → model → deployment)
-* ✔️ Clean and modular code structure
-* ✔️ Real-world problem solving
-* ✔️ User-friendly interactive UI
-
----
-
-## 🚀 Future Improvements
-
-* 🔸 Deploy the app on cloud (Streamlit Cloud / AWS)
-* 🔸 Add real-time data integration
-* 🔸 Improve model accuracy with advanced algorithms
-* 🔸 Add historical trend analysis
+* End-to-end machine learning implementation
+* Real-world mining and geological data
+* Modular and maintainable project structure
+* Regression-based production forecasting
+* Interactive prediction interface using Streamlit
+* Graphical and geographical data visualization
+* Integration of machine learning with a deployable web application
 
 ---
 
-## 👨‍💻 Author
+## Future Improvements
+
+* Deploy the application using **Streamlit Cloud or AWS**
+* Integrate updated or real-time mining datasets
+* Experiment with additional regression algorithms
+* Perform further hyperparameter optimization
+* Add historical production trend analysis
+* Improve visualization and analytical capabilities
+* Add model monitoring and performance tracking
+
+---
+
+## Author
 
 **Abhinav Yadav**
-Computer Science Engineer
+Computer Science Engineering Student
+
 ---
 
-⭐ If you like this project, consider giving it a star!
+## License
+
+This project is intended for educational and academic purposes.
