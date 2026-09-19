@@ -1,39 +1,39 @@
 # Coal Production Prediction Using Machine Learning
 
-> A machine learning application for predicting coal production from mining, ownership, coal-type, and geographical features, with an interactive Streamlit interface for real-time predictions and visualization.
+> An end-to-end machine learning application that predicts coal production from mining and geographical attributes using Random Forest Regression, with an interactive Streamlit web interface for real-time predictions and visualization.
 
 ---
 
-## 📌 Project Overview
+## 📌 Overview
 
-**Coal Production Prediction** is an end-to-end machine learning project developed to estimate coal production using real-world mining data.
+**Coal Production Prediction** is a machine learning project developed to estimate coal production using real-world mining data.
 
-The project applies **Random Forest Regression** to learn relationships between mining characteristics and coal production. The trained model is integrated into a **Streamlit web application**, allowing users to enter relevant mining parameters and obtain an estimated production value along with supporting visual insights.
+The project uses **Random Forest Regression** to learn patterns between mining characteristics and production levels. The trained model is integrated with a **Streamlit web application**, allowing users to provide mining-related inputs and obtain production predictions along with graphical and geographical insights.
 
-The project demonstrates the complete machine learning workflow:
+The project covers the complete machine learning workflow:
 
-**Data → Preprocessing → Feature Engineering → Model Training → Evaluation → Prediction → Web Application**
+**Data Collection → Preprocessing → Feature Engineering → Model Training → Evaluation → Prediction → Web Application**
 
 ---
 
 ## 🎯 Problem Statement
 
-Coal production depends on several factors, including the type of coal, ownership of the mine, geographical location, and other mining-related characteristics.
+Coal production varies based on multiple factors such as coal type, mine ownership, geographical location, and other mining characteristics.
 
-Analyzing these factors manually can make production estimation difficult. This project aims to build a machine learning system that can use historical mining data to estimate coal production and present the results through an easy-to-use web interface.
+The objective of this project is to develop a machine learning-based system that uses historical mining data to estimate coal production and presents the results through an interactive and user-friendly web application.
 
 ---
 
 ## 🚀 Objectives
 
-* Build a machine learning model for coal production prediction.
-* Preprocess and transform real-world mining data.
-* Handle categorical and numerical features appropriately.
-* Train a regression model using Random Forest.
-* Evaluate the performance of the trained model.
-* Develop an interactive Streamlit application.
-* Provide production-level classification and visual insights.
-* Display geographical information using latitude and longitude.
+* Develop a machine learning model for coal production prediction.
+* Process and prepare real-world mining data for machine learning.
+* Handle categorical and numerical features.
+* Train a Random Forest Regression model.
+* Evaluate the trained model using regression metrics.
+* Build an interactive Streamlit application.
+* Provide production-level classification.
+* Present prediction results through visual and geographical insights.
 
 ---
 
@@ -41,30 +41,30 @@ Analyzing these factors manually can make production estimation difficult. This 
 
 ### Machine Learning
 
-* Data cleaning and preprocessing
+* Data preprocessing and cleaning
 * Feature engineering
 * Categorical feature encoding
-* Train-test data splitting
+* Train-test splitting
 * Random Forest Regression
 * Model evaluation
 * Prediction pipeline
 
 ### Interactive Application
 
-* Simple and user-friendly input interface
+* User-friendly input interface
 * Real-time production prediction
 * Production category classification
-* Prediction comparison with average production
-* Geographical visualization
-* Interactive charts and maps
+* Prediction vs. average production comparison
+* Graphical data visualization
+* Location visualization using geographical coordinates
 
 ---
 
 ## 📊 Dataset
 
-The project uses real-world mining data containing information related to coal production and mine characteristics.
+The project uses real-world mining data containing information about coal production, mine characteristics, ownership, coal type, and geographical location.
 
-### Important Features
+### Dataset Features
 
 | Feature                 | Description                                        |
 | ----------------------- | -------------------------------------------------- |
@@ -78,7 +78,7 @@ The project uses real-world mining data containing information related to coal p
 | Latitude                | Geographical latitude                              |
 | Longitude               | Geographical longitude                             |
 
-The dataset contains both **categorical and numerical features**, which are processed before being supplied to the machine learning model.
+The dataset contains both **categorical and numerical attributes**, which are processed before model training.
 
 ---
 
@@ -86,70 +86,70 @@ The dataset contains both **categorical and numerical features**, which are proc
 
 ### Random Forest Regression
 
-The project uses **Random Forest Regression** as the primary prediction algorithm.
+The project uses **Random Forest Regression** as the primary machine learning algorithm.
 
-Random Forest is an ensemble machine learning algorithm that combines predictions from multiple decision trees. It is suitable for this project because it can capture non-linear relationships between mining features and production values.
+Random Forest is an ensemble learning technique that combines multiple decision trees to produce a final prediction. It can capture complex and non-linear relationships between input features and the target production value.
 
-### Prediction Target
+### Target Variable
 
 The model predicts:
 
 **Coal/Lignite Production**
 
-The prediction is represented in **million tonnes** in the application.
+The application displays the predicted production in **million tonnes**.
 
 ---
 
-## 🔄 Machine Learning Pipeline
+## 🔄 Machine Learning Workflow
 
 ```text
-             Raw Mining Dataset
-                     │
-                     ▼
-             Data Preprocessing
-                     │
-                     ▼
-             Feature Engineering
-                     │
-                     ▼
-             Categorical Encoding
-                     │
-                     ▼
-              Train-Test Split
-                     │
-                     ▼
-          Random Forest Regression
-                     │
-                     ▼
-             Model Evaluation
-                     │
-                     ▼
-              Trained Model
-                     │
-                     ▼
-             Prediction Pipeline
-                     │
-                     ▼
-          Streamlit Web Application
-                     │
-              ┌──────┴──────┐
-              ▼             ▼
-        Prediction      Visualization
+                  Raw Mining Data
+                         │
+                         ▼
+                Data Preprocessing
+                         │
+                         ▼
+                Feature Engineering
+                         │
+                         ▼
+                Categorical Encoding
+                         │
+                         ▼
+                  Train-Test Split
+                         │
+                         ▼
+              Random Forest Regression
+                         │
+                         ▼
+                 Model Evaluation
+                         │
+                         ▼
+                  Trained Model
+                         │
+                         ▼
+                 Prediction Pipeline
+                         │
+                         ▼
+              Streamlit Web Application
+                         │
+                  ┌──────┴──────┐
+                  ▼             ▼
+              Prediction   Visualization
 ```
 
 ---
 
 ## 📈 Application Output
 
-After entering the required parameters, the application provides:
+The application provides the following results based on the entered parameters:
 
-### Production Prediction
+### Estimated Production
 
-Displays the estimated coal production in **million tonnes**.
+Displays the predicted coal production in **million tonnes**.
 
 ### Production Category
 
-The predicted production is categorized as:
+The predicted production is classified into:
 
 * **Low**
 * **Medium**
@@ -157,40 +157,40 @@ The predicted production is categorized as:
 
 ### Production Comparison
 
-The application provides a visual comparison between the predicted production and the average production value.
+A graphical comparison is provided between the predicted production and the average production.
 
 ### Location Visualization
 
-The selected mine location can be visualized using its **latitude and longitude** coordinates.
+The selected location is visualized using its **latitude and longitude** coordinates.
 
 ---
 
-## 🖥️ Web Application
+## 🖥️ Streamlit Application
 
-The project uses **Streamlit** to provide an interactive interface for the trained machine learning model.
+The machine learning model is integrated into a **Streamlit web application**.
 
-The application allows users to:
+Users can:
 
-1. Enter mining-related parameters.
-2. Submit the input values.
-3. Generate a production prediction.
-4. View the corresponding production category.
-5. Analyze graphical insights.
-6. View the selected geographical location.
+1. Enter the required mining parameters.
+2. Submit the input data.
+3. Generate a coal production prediction.
+4. View the production category.
+5. Analyze the prediction through visualizations.
+6. View the selected mining location on a map.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
-| Category             | Technology               |
+| Category             | Technologies             |
 | -------------------- | ------------------------ |
 | Programming Language | Python                   |
 | Data Processing      | Pandas, NumPy            |
 | Machine Learning     | Scikit-learn             |
-| Model                | Random Forest Regression |
+| ML Algorithm         | Random Forest Regression |
 | Visualization        | Matplotlib, Seaborn      |
-| Web Framework        | Streamlit                |
-| Version Control      | Git & GitHub             |
+| Web Application      | Streamlit                |
+| Version Control      | Git, GitHub              |
 
 ---
 
@@ -200,10 +200,8 @@ The application allows users to:
 coal_project/
 │
 ├── data/
-│   └── dataset.csv
 │
 ├── model/
-│   └── trained_model.pkl
 │
 ├── src/
 │   ├── preprocess.py
@@ -217,11 +215,9 @@ coal_project/
 └── .gitignore
 ```
 
-> File names inside `data/` and `model/` may vary depending on the current implementation.
-
 ---
 
-## ⚙️ Installation & Setup
+## ⚙️ Installation
 
 ### Prerequisites
 
@@ -235,15 +231,10 @@ Make sure the following are installed:
 
 ```bash
 git clone <repository-url>
-```
-
-### 2. Navigate to the Project
-
-```bash
 cd coal_project
 ```
 
-### 3. Create a Virtual Environment
+### 2. Create a Virtual Environment
 
 **Windows:**
 
@@ -259,7 +250,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 4. Install Dependencies
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -267,90 +258,91 @@ pip install -r requirements.txt
 
 ---
 
-## ▶️ Running the Project
+## ▶️ Usage
 
-### Step 1 — Train the Model
+### Train the Model
+
+Run the training script:
 
 ```bash
 python src/train.py
 ```
 
-This processes the dataset and trains the Random Forest regression model.
+This prepares the data and trains the Random Forest Regression model.
 
-### Step 2 — Run the Streamlit Application
+### Run the Streamlit Application
 
 ```bash
 python -m streamlit run app.py
 ```
 
-The application will open in your default browser.
+The application will open in your default web browser.
 
 ---
 
 ## 🧪 Model Evaluation
 
-The model can be evaluated using regression performance metrics such as:
+The model can be evaluated using standard regression metrics, including:
 
 * **Mean Absolute Error (MAE)**
 * **Mean Squared Error (MSE)**
 * **Root Mean Squared Error (RMSE)**
 * **R² Score**
 
-These metrics help measure the difference between actual and predicted coal production values.
+These metrics help measure the difference between actual and predicted production values.
 
 ---
 
 ## 📊 Visualizations
 
-The project includes visualizations to make the model results easier to understand.
+The application provides visual insights to make the prediction results easier to interpret.
 
-Examples include:
+Current visualization capabilities include:
 
-* Production comparison charts
+* Predicted production comparison
 * Average production comparison
-* Prediction-related visualizations
-* Geographical map visualization
+* Production-related graphs
+* Geographical location visualization
 
 ---
 
-## 💡 What This Project Demonstrates
+## 💡 Skills Demonstrated
 
-This project demonstrates practical experience in:
+This project demonstrates practical implementation of:
 
+* Python programming
 * Data preprocessing
 * Exploratory data analysis
 * Feature engineering
-* Machine learning regression
+* Categorical data encoding
+* Regression modeling
 * Model evaluation
-* Python-based data analytics
-* Building interactive ML applications
-* Integrating a trained model into a web interface
-* Git and GitHub project management
+* Data visualization
+* Streamlit application development
+* Git and GitHub
 
 ---
 
 ## 🔮 Future Improvements
 
-Potential improvements include:
-
-* Experimenting with additional regression algorithms such as Gradient Boosting and XGBoost.
-* Automated hyperparameter optimization.
-* Adding historical production trend analysis.
-* Integrating regularly updated mining datasets.
-* Improving geographical analysis.
-* Adding model performance monitoring.
-* Deploying the application to a cloud platform.
-* Improving the user interface and visualization dashboard.
+* Experiment with additional machine learning algorithms.
+* Perform automated hyperparameter optimization.
+* Add historical production trend analysis.
+* Integrate regularly updated mining datasets.
+* Enhance geographical analysis.
+* Add model performance monitoring.
+* Improve dashboard design and visualization.
+* Deploy the application on a cloud platform such as Streamlit Community Cloud or AWS.
 
 ---
 
 ## 🌐 Deployment
 
-The application can be deployed using platforms such as:
+The Streamlit application can be deployed to cloud platforms such as:
 
-* Streamlit Community Cloud
-* AWS
-* Other cloud-based hosting platforms
+* **Streamlit Community Cloud**
+* **AWS**
+* Other cloud hosting platforms
 
 ---
 
@@ -363,7 +355,7 @@ MIT World Peace University
 
 ---
 
-## ⭐ Project
+## ⭐ Support
 
 If you find this project useful, consider giving the repository a **star**.
 
