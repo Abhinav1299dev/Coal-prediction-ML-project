@@ -81,4 +81,4 @@ plt.legend(loc='lower right')
 # Save figure
 plt.savefig("roc_curve.png", dpi=300, bbox_inches='tight')
 
-print("✅ ROC curve saved as roc_curve.png")
+print("ROC curve saveed as roc_curve.png")
