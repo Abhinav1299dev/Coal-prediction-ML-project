@@ -351,7 +351,9 @@ The Streamlit application can be deployed to cloud platforms such as:
 **Abhinav Yadav**
 
 Computer Science Engineering Student
-MIT
+MIT 
+CSE
+
 
 ---
 

@@ -1,93 +1,178 @@
-import streamlit as st
+
 import pickle
+from pathlib import Path
+
 import pandas as pd
+import streamlit as st
 
 from src.preprocess import load_data, preprocess_data, split_data
 
 
-# ---------------------------------------------------------
-# PAGE CONFIGURATION
-# ---------------------------------------------------------
+# =========================================================
+# CONFIGURATION
+# =========================================================
+
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "model" / "model.pkl"
 
 st.set_page_config(
-    page_title="Coal Production Prediction",
+    page_title="Coal Analytics | Production Predictor",
     page_icon="⛏️",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 
-# ---------------------------------------------------------
-# CUSTOM CSS
-# ---------------------------------------------------------
+# =========================================================
+# PROFESSIONAL STYLING
+# =========================================================
 
-st.markdown("""
-<style>
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #f5f7fa;
+    }
 
-.main {
-    padding-top: 1rem;
-}
+    .block-container {
+        max-width: 1450px;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
 
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-}
+    [data-testid="stSidebar"] {
+        background-color: #172333;
+    }
 
-.title {
-    font-size: 38px;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
+    [data-testid="stSidebar"] * {
+        color: #f1f5f9;
+    }
 
-.subtitle {
-    font-size: 17px;
-    color: #666;
-    margin-bottom: 25px;
-}
+    .hero {
+        background: linear-gradient(120deg, #172333, #263f55);
+        padding: 30px 32px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        color: white;
+    }
 
-.section-title {
-    font-size: 22px;
-    font-weight: 600;
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
+    .hero h1 {
+        font-size: 32px;
+        font-weight: 750;
+        margin: 0 0 10px 0;
+        color: white;
+    }
 
-.prediction-box {
-    padding: 25px;
-    border-radius: 12px;
-    background-color: #f5f7fa;
-    border: 1px solid #ddd;
-    text-align: center;
-}
+    .hero p {
+        color: #d4e0ec;
+        font-size: 15px;
+        margin: 0;
+        line-height: 1.7;
+    }
 
-.metric-value {
-    font-size: 32px;
-    font-weight: 700;
-}
+    .section-heading {
+        font-size: 21px;
+        font-weight: 700;
+        color: #172333;
+        margin: 12px 0 5px 0;
+    }
 
-.metric-label {
-    font-size: 15px;
-    color: #666;
-}
+    .section-description {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
 
-.footer {
-    text-align: center;
-    color: #777;
-    font-size: 13px;
-    margin-top: 40px;
-}
+    .result-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 22px;
+        min-height: 125px;
+    }
 
-</style>
-""", unsafe_allow_html=True)
+    .result-label {
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 10px;
+    }
+
+    .result-value {
+        font-size: 27px;
+        font-weight: 750;
+        color: #172333;
+        overflow-wrap: anywhere;
+    }
+
+    .result-note {
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .footer {
+        text-align: center;
+        color: #64748b;
+        font-size: 12px;
+        padding: 20px 0 8px 0;
+    }
+
+    div[data-testid="stForm"] {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 24px;
+    }
+
+    div.stButton > button[kind="primary"],
+    div[data-testid="stFormSubmitButton"] button {
+        background-color: #176b52;
+        border: 1px solid #176b52;
+        color: white;
+        font-weight: 650;
+        min-height: 46px;
+        border-radius: 9px;
+    }
+
+    div.stButton > button[kind="primary"]:hover,
+    div[data-testid="stFormSubmitButton"] button:hover {
+        background-color: #125640;
+        border-color: #125640;
+        color: white;
+    }
+
+    [data-testid="stMetric"] {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 18px;
+    }
+
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 
-# ---------------------------------------------------------
-# LOAD MODEL
-# ---------------------------------------------------------
+# =========================================================
+# MODEL AND DATA LOADING
+# =========================================================
 
 @st.cache_resource
 def load_model():
-    with open("model/model.pkl", "rb") as file:
+    if not MODEL_PATH.exists():
+        raise FileNotFoundError(
+            f"Model file not found: {MODEL_PATH}"
+        )
+
+    with MODEL_PATH.open("rb") as file:
         return pickle.load(file)
 
 
@@ -95,302 +180,358 @@ def load_model():
 def load_training_columns():
     df = load_data()
     df = preprocess_data(df)
-    X, y = split_data(df)
+    X, _ = split_data(df)
+
     return X.columns.tolist()
 
 
-model = load_model()
-training_columns = load_training_columns()
+try:
+    model = load_model()
+    training_columns = load_training_columns()
+
+except Exception:
+    st.error(
+        "The application could not load its model or training data. "
+        "Check the model path and preprocessing configuration."
+    )
+    st.stop()
 
 
-# ---------------------------------------------------------
-# HEADER
-# ---------------------------------------------------------
-
-st.markdown(
-    '<div class="title">⛏️ Coal Production Prediction System</div>',
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    '<div class="subtitle">'
-    'Machine Learning based prediction of coal production using '
-    'geological, ownership and geographical features.'
-    '</div>',
-    unsafe_allow_html=True
-)
-
-st.divider()
-
-
-# ---------------------------------------------------------
+# =========================================================
 # SIDEBAR
-# ---------------------------------------------------------
+# =========================================================
 
 with st.sidebar:
+    st.markdown("## ⛏️ COAL ANALYTICS")
+    st.caption("MACHINE LEARNING PLATFORM")
 
-    st.header("About the Model")
+    st.divider()
 
+    st.markdown("### About the Project")
     st.write(
-        "This application uses a machine learning model trained "
-        "on historical coal production and mine-related data."
+        "A machine-learning application designed to estimate "
+        "coal production from mine ownership, resource type, "
+        "state and geographical coordinates."
+    )
+
+    st.markdown("### Model Inputs")
+
+    st.markdown(
+        """
+        - State / Union Territory
+        - Coal or lignite classification
+        - Ownership category
+        - Latitude and longitude
+        """
     )
 
     st.divider()
 
-    st.subheader("Input Features")
-
-    st.write("• State / UT")
-    st.write("• Coal / Lignite")
-    st.write("• Ownership")
-    st.write("• Latitude")
-    st.write("• Longitude")
-
-    st.divider()
-
+    st.markdown("### Important Information")
     st.caption(
-        "Prediction results are estimates based on historical "
-        "data patterns and model training."
+        "Predictions depend on the training data and model "
+        "quality. They are estimates, not verified production "
+        "records or official forecasts."
     )
 
+    st.markdown("---")
+    st.caption("Coal Analytics | Academic ML Project")
 
-# ---------------------------------------------------------
-# INPUT SECTION
-# ---------------------------------------------------------
+
+# =========================================================
+# HERO HEADER
+# =========================================================
 
 st.markdown(
-    '<div class="section-title">Mine Information</div>',
-    unsafe_allow_html=True
+    """
+    <div class="hero">
+        <h1>Coal Production Predictor</h1>
+        <p>
+            Estimate coal production using machine learning
+            and mine-related geographical and ownership features.
+            Enter the mine information below to generate a prediction.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
-col1, col2 = st.columns(2)
 
-with col1:
+# =========================================================
+# INPUT FORM
+# =========================================================
 
-    state = st.text_input(
-        "State / UT Name",
-        placeholder="e.g. Maharashtra"
+st.markdown(
+    '<div class="section-heading">Mine Information</div>',
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    '<div class="section-description">'
+    'Provide the available mine characteristics to estimate production.'
+    '</div>',
+    unsafe_allow_html=True,
+)
+
+with st.form("prediction_form"):
+    col1, col2 = st.columns(2, gap="large")
+
+    with col1:
+        state = st.text_input(
+            "State / Union Territory",
+            placeholder="e.g. Maharashtra",
+            help="Enter a state name consistent with the training dataset.",
+        )
+
+        coal_type = st.selectbox(
+            "Resource Classification",
+            ["Coal", "Lignite"],
+        )
+
+        ownership = st.selectbox(
+            "Ownership Type",
+            ["Govt Owned", "Private"],
+        )
+
+    with col2:
+        latitude = st.number_input(
+            "Latitude",
+            min_value=-90.0,
+            max_value=90.0,
+            value=20.0,
+            step=0.0001,
+            format="%.4f",
+        )
+
+        longitude = st.number_input(
+            "Longitude",
+            min_value=-180.0,
+            max_value=180.0,
+            value=78.0,
+            step=0.0001,
+            format="%.4f",
+        )
+
+        st.caption(
+            "Coordinates should correspond to the mine's location."
+        )
+
+    submitted = st.form_submit_button(
+        "Generate Production Estimate",
+        use_container_width=True,
     )
 
-    coal_type = st.selectbox(
-        "Coal / Lignite",
-        ["Coal", "Lignite"]
-    )
 
-    ownership = st.selectbox(
-        "Ownership",
-        ["Govt Owned", "Private"]
-    )
-
-
-with col2:
-
-    latitude = st.number_input(
-        "Latitude",
-        min_value=-90.0,
-        max_value=90.0,
-        value=20.0,
-        step=0.0001,
-        format="%.4f"
-    )
-
-    longitude = st.number_input(
-        "Longitude",
-        min_value=-180.0,
-        max_value=180.0,
-        value=78.0,
-        step=0.0001,
-        format="%.4f"
-    )
-
-
-st.divider()
-
-
-# ---------------------------------------------------------
-# INPUT PREPARATION
-# ---------------------------------------------------------
-
-input_dict = {
-    "State/UT Name": state.strip(),
-    "Coal/Lignite": coal_type,
-    "Govt Owned/Private": ownership,
-    "Latitude ": latitude,
-    "Longitude ": longitude
-}
-
-input_df = pd.DataFrame([input_dict])
-
-
-# ---------------------------------------------------------
+# =========================================================
 # PREDICTION
-# ---------------------------------------------------------
+# =========================================================
 
-predict_button = st.button(
-    "🔍 Predict Coal Production",
-    use_container_width=True,
-    type="primary"
-)
-
-
-if predict_button:
-
-    # Validate state
+if submitted:
     if not state.strip():
-
-        st.warning("Please enter a State / UT Name.")
+        st.warning(
+            "Please enter a State / Union Territory before continuing."
+        )
 
     else:
-
         try:
+            # Keep the column names consistent with the training data.
+            input_data = pd.DataFrame(
+                [
+                    {
+                        "State/UT Name": state.strip(),
+                        "Coal/Lignite": coal_type,
+                        "Govt Owned/Private": ownership,
+                        "Latitude ": latitude,
+                        "Longitude ": longitude,
+                    }
+                ]
+            )
 
-            # Convert categorical variables
-            input_encoded = pd.get_dummies(input_df)
+            # One-hot encode categorical features.
+            input_encoded = pd.get_dummies(input_data)
 
-            # Match training features
+            # Match the exact training feature structure.
             input_encoded = input_encoded.reindex(
                 columns=training_columns,
-                fill_value=0
+                fill_value=0,
             )
 
-            # Prediction
-            prediction = model.predict(input_encoded)[0]
+            # Predict using the loaded model.
+            prediction = float(model.predict(input_encoded)[0])
 
-            # -------------------------------------------------
+            if not pd.notna(prediction):
+                raise ValueError("The model returned an invalid prediction.")
+
             # IMPORTANT:
-            # Replace this conversion with inverse_transform()
-            # if a target scaler was used during training.
-            # -------------------------------------------------
+            # Do not multiply by 45 unless this is the documented
+            # inverse transformation used during model training.
+            production = prediction
 
-            real_prediction = prediction * 45
-
-            # Production category
-            if real_prediction < 10:
-                level = "Low Production"
-            elif real_prediction < 25:
-                level = "Medium Production"
+            # These thresholds are examples. Adjust them to match
+            # the actual target unit and project requirements.
+            if production < 10:
+                production_level = "Low"
+                interpretation = (
+                    "The predicted value falls within the low "
+                    "production band configured for this application."
+                )
+            elif production < 25:
+                production_level = "Medium"
+                interpretation = (
+                    "The predicted value falls within the medium "
+                    "production band configured for this application."
+                )
             else:
-                level = "High Production"
+                production_level = "High"
+                interpretation = (
+                    "The predicted value falls within the high "
+                    "production band configured for this application."
+                )
 
-
-            # -------------------------------------------------
-            # RESULT
-            # -------------------------------------------------
-
-            st.success("Prediction generated successfully.")
+            st.divider()
 
             st.markdown(
-                '<div class="section-title">Prediction Result</div>',
-                unsafe_allow_html=True
+                '<div class="section-heading">Prediction Results</div>',
+                unsafe_allow_html=True,
             )
 
-            result_col1, result_col2 = st.columns(2)
+            st.markdown(
+                '<div class="section-description">'
+                'Results generated from the supplied mine information.'
+                '</div>',
+                unsafe_allow_html=True,
+            )
+
+            # -------------------------------------------------
+            # RESULT CARDS
+            # -------------------------------------------------
+
+            result_col1, result_col2 = st.columns(2, gap="large")
 
             with result_col1:
-
-                st.metric(
-                    label="Estimated Coal Production",
-                    value=f"{real_prediction:.2f} MT"
+                st.markdown(
+                    f"""
+                    <div class="result-card">
+                        <div class="result-label">
+                            PREDICTED PRODUCTION
+                        </div>
+                        <div class="result-value">
+                            {production:,.2f}
+                        </div>
+                        <div class="result-note">
+                            Model output in the target's training unit
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
                 )
 
             with result_col2:
-
-                st.metric(
-                    label="Production Level",
-                    value=level
+                st.markdown(
+                    f"""
+                    <div class="result-card">
+                        <div class="result-label">
+                            PRODUCTION CATEGORY
+                        </div>
+                        <div class="result-value">
+                            {production_level}
+                        </div>
+                        <div class="result-note">
+                            Based on the configured thresholds
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
                 )
-
 
             # -------------------------------------------------
             # INPUT SUMMARY
             # -------------------------------------------------
 
-            st.divider()
-
-            st.subheader("Input Summary")
+            st.markdown("### Input Summary")
 
             summary_col1, summary_col2, summary_col3 = st.columns(3)
 
             with summary_col1:
-                st.write("**State / UT**")
-                st.write(state)
+                st.metric("State / UT", state.strip())
 
             with summary_col2:
-                st.write("**Coal Type**")
-                st.write(coal_type)
+                st.metric("Resource", coal_type)
 
             with summary_col3:
-                st.write("**Ownership**")
-                st.write(ownership)
+                st.metric("Ownership", ownership)
 
+            location_col1, location_col2 = st.columns(2)
 
-            summary_col4, summary_col5 = st.columns(2)
+            with location_col1:
+                st.metric("Latitude", f"{latitude:.4f}")
 
-            with summary_col4:
-                st.write("**Latitude**")
-                st.write(f"{latitude:.4f}")
-
-            with summary_col5:
-                st.write("**Longitude**")
-                st.write(f"{longitude:.4f}")
-
+            with location_col2:
+                st.metric("Longitude", f"{longitude:.4f}")
 
             # -------------------------------------------------
             # INTERPRETATION
             # -------------------------------------------------
 
-            st.divider()
-
-            st.subheader("Prediction Interpretation")
-
-            if level == "Low Production":
-
-                st.info(
-                    "The model estimates relatively low coal production "
-                    "for the provided mine characteristics."
-                )
-
-            elif level == "Medium Production":
-
-                st.info(
-                    "The model estimates a moderate level of coal "
-                    "production based on the provided characteristics."
-                )
-
-            else:
-
-                st.info(
-                    "The model estimates relatively high coal production "
-                    "for the provided mine characteristics."
-                )
-
+            st.markdown("### Interpretation")
+            st.info(interpretation)
 
             st.caption(
-                "Note: This prediction is generated from historical "
-                "training data and should be interpreted as an estimate, "
-                "not as an exact production value."
+                "This result is a model-generated estimate. "
+                "Its reliability depends on the quality and coverage "
+                "of the training dataset. It should not be treated "
+                "as an official production figure."
             )
 
+            # -------------------------------------------------
+            # EXPORT RESULT
+            # -------------------------------------------------
 
-        except Exception as e:
+            report = pd.DataFrame(
+                [
+                    {
+                        "State/UT Name": state.strip(),
+                        "Coal/Lignite": coal_type,
+                        "Ownership": ownership,
+                        "Latitude": latitude,
+                        "Longitude": longitude,
+                        "Predicted Production": production,
+                        "Production Category": production_level,
+                    }
+                ]
+            )
 
+            st.download_button(
+                label="Download Prediction Report (CSV)",
+                data=report.to_csv(index=False).encode("utf-8"),
+                file_name="coal_production_prediction.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+
+        except Exception:
             st.error(
-                "Unable to generate the prediction. "
-                "Please verify the input values and model configuration."
+                "Prediction failed. Verify the input features, "
+                "model file, preprocessing steps and target transformation."
+            )
+            st.caption(
+                "For debugging, check the application logs and terminal "
+                "for the underlying exception."
             )
 
-            st.exception(e)
 
-
-# ---------------------------------------------------------
+# =========================================================
 # FOOTER
-# ---------------------------------------------------------
+# =========================================================
 
 st.divider()
 
 st.markdown(
-    '<div class="footer">'
-    'Coal Production Prediction System • Machine Learning Project'
-    '</div>',
-    unsafe_allow_html=True
+    """
+    <div class="footer">
+        COAL ANALYTICS &nbsp;•&nbsp;
+        Machine Learning Based Production Estimation
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
